@@ -13,9 +13,9 @@ import java.util.NoSuchElementException;
 @Service
 public class ClientServiceImpl implements ClientService {
 
-    private ClientRepository repository;
+    private final ClientRepository repository;
 
-    private ClientMapper mapper;
+    private final ClientMapper mapper;
 
     public ClientServiceImpl(ClientRepository repository, ClientMapper mapper) {
         this.repository = repository;
@@ -25,20 +25,20 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public ClientDTO addClient(ClientCreateDTO createDTO) {
-        Client toBeSaved = mapper.addClient(createDTO);
+        Client toBeSaved = mapper.toEntity(createDTO);
         Client saved = repository.save(toBeSaved);
 
-        return mapper.showClient(saved);
+        return mapper.toDTO(saved);
     }
 
     @Override
     public ClientDTO updateClient(ClientCreateDTO createDTO, Long id) {
         repository.findById(id).orElseThrow(() -> new NoSuchElementException("No client was found"));
         createDTO.setId(id);
-        Client toBeSaved = mapper.addClient(createDTO);
+        Client toBeSaved = mapper.toEntity(createDTO);
         Client saved = repository.save(toBeSaved);
 
-        return mapper.showClient(saved);
+        return mapper.toDTO(saved);
     }
 
     @Override

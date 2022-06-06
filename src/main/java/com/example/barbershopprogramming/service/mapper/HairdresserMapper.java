@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class HairdresserMapper {
 
 
-    public Hairdresser addHairdresser(HairdresserCreateDto createDto) {
+    public Hairdresser toEntity(HairdresserCreateDto createDto) {
         return Hairdresser.builder()
                 .id(createDto.getId())
                 .firstname(createDto.getFirstname())
@@ -20,7 +20,7 @@ public class HairdresserMapper {
                 .build();
     }
 
-    public HairdresserDTO showHairdresser(Hairdresser hairdresser) {
+    public HairdresserDTO toDTO(Hairdresser hairdresser) {
         return HairdresserDTO.builder()
                 .firstname(hairdresser.getFirstname())
                 .lastname(hairdresser.getLastname())

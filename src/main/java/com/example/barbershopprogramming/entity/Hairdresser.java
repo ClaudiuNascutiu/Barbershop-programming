@@ -1,10 +1,13 @@
 package com.example.barbershopprogramming.entity;
 
-import com.sun.istack.NotNull;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @SuperBuilder
@@ -19,4 +22,6 @@ public class Hairdresser extends Person {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @OneToMany(mappedBy = "hairdresser", cascade = CascadeType.ALL)
+    private Set<Appointment> appointments;
 }

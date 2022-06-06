@@ -4,29 +4,25 @@ import com.example.barbershopprogramming.dto.ClientCreateDTO;
 import com.example.barbershopprogramming.dto.ClientDTO;
 import com.example.barbershopprogramming.entity.Client;
 import com.example.barbershopprogramming.service.ClientService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("api/client")
 public class ClientController {
 
     private final ClientService service;
 
-    public ClientController(ClientService service) {
-        this.service = service;
-    }
-
     @PostMapping
     public ResponseEntity<ClientDTO> addClient(@RequestBody ClientCreateDTO createDTO){
-        ClientDTO addClient = service.addClient(createDTO);
-        return ResponseEntity.ok(addClient);
+        return ResponseEntity.ok(service.addClient(createDTO));
     }
 
     @PutMapping("/{id}")
     public  ResponseEntity<ClientDTO> updateClient(@RequestBody ClientCreateDTO createDTO, @PathVariable Long id){
-        ClientDTO updateClient = service.updateClient(createDTO, id);
-        return ResponseEntity.ok(updateClient);
+        return ResponseEntity.ok(service.updateClient(createDTO, id));
     }
 
     @DeleteMapping("/{id}")

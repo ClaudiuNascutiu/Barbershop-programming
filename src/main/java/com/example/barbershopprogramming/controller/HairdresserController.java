@@ -4,30 +4,26 @@ package com.example.barbershopprogramming.controller;
 import com.example.barbershopprogramming.dto.HairdresserCreateDto;
 import com.example.barbershopprogramming.dto.HairdresserDTO;
 import com.example.barbershopprogramming.service.HairdresserService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("api/hairdresser")
 public class HairdresserController {
 
     private final HairdresserService service;
 
-    public HairdresserController(HairdresserService service) {
-        this.service = service;
-    }
-
     @PostMapping
     public ResponseEntity<HairdresserDTO> addHairdresser(@RequestBody HairdresserCreateDto createDto) {
-        HairdresserDTO addHairdresser = service.addHairdresser(createDto);
-        return ResponseEntity.ok(addHairdresser);
+        return ResponseEntity.ok(service.addHairdresser(createDto));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<HairdresserDTO> updateHairdresser(@RequestBody HairdresserCreateDto createDto,
                                                             @PathVariable Long id) {
-        HairdresserDTO updateHairdresser = service.updateHairdresser(createDto, id);
-        return ResponseEntity.ok(updateHairdresser);
+        return ResponseEntity.ok(service.updateHairdresser(createDto, id));
     }
 
     @DeleteMapping("/{id}")

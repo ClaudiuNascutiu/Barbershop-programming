@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ClientMapper {
 
-    public Client addClient(ClientCreateDTO createDTO) {
+    public Client toEntity(ClientCreateDTO createDTO) {
         return Client.builder()
                 .id(createDTO.getId())
                 .firstname(createDTO.getFirstname())
@@ -19,7 +19,7 @@ public class ClientMapper {
                 .build();
     }
 
-    public ClientDTO showClient(Client client) {
+    public ClientDTO toDTO(Client client) {
         return ClientDTO.builder()
                 .firstname(client.getFirstname())
                 .lastname(client.getLastname())

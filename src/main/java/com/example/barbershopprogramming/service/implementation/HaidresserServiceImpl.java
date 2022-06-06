@@ -24,20 +24,20 @@ public class HaidresserServiceImpl implements HairdresserService {
 
     @Override
     public HairdresserDTO addHairdresser(HairdresserCreateDto addHairdresser) {
-        Hairdresser toBeSaved = mapper.addHairdresser(addHairdresser);
+        Hairdresser toBeSaved = mapper.toEntity(addHairdresser);
         Hairdresser saved = repository.save(toBeSaved);
 
-        return mapper.showHairdresser(saved);
+        return mapper.toDTO(saved);
     }
 
     @Override
     public HairdresserDTO updateHairdresser(HairdresserCreateDto createDto, Long id) {
         repository.findById(id).orElseThrow(() -> new NoSuchElementException("No createDto was found"));
         createDto.setId(id);
-        Hairdresser toBeSaved = mapper.addHairdresser(createDto);
+        Hairdresser toBeSaved = mapper.toEntity(createDto);
         Hairdresser saved = repository.save(toBeSaved);
 
-        return mapper.showHairdresser(saved);
+        return mapper.toDTO(saved);
     }
 
     @Override
