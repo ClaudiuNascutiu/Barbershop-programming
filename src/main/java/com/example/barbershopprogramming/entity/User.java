@@ -1,9 +1,6 @@
 package com.example.barbershopprogramming.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
@@ -15,13 +12,25 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "client")
-public class Client extends Person{
+@Table(name = "user")
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
-    private List<Appointment> appointment;
+    private String firstname;
+
+    private String lastname;
+
+    private String phoneNumber;
+
+    private String email;
+
+    private String password;
+
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "role")
+    private Role role;
+
 }

@@ -14,7 +14,7 @@ import java.time.LocalTime;
 @Setter
 public class Schedule {
 
-    private LocalTime startTime = LocalTime.parse("10:00:00");
+    private LocalTime startTime = LocalTime.parse("10:00");
 
-    private LocalTime endTime = LocalTime.parse("17:00:00");
+    private LocalTime endTime = LocalTime.parse("17:00");
 }

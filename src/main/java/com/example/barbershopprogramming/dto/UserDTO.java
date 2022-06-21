@@ -1,6 +1,7 @@
 package com.example.barbershopprogramming.dto;
 
 
+import com.example.barbershopprogramming.entity.Role;
 import lombok.*;
 
 @NoArgsConstructor
@@ -8,7 +9,9 @@ import lombok.*;
 @Getter
 @Setter
 @Builder
-public class ClientDTO {
+public class UserDTO {
+
+    private Long id;
 
     private String firstname;
 
@@ -17,4 +20,6 @@ public class ClientDTO {
     private String phoneNumber;
 
     private String email;
+
+    private Role role;
 }

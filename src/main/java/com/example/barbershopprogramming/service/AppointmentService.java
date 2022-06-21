@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface AppointmentService {
 
-    AppointmentDTO addAppointment(AppointmentCreateDTO appointment, Long hairdresserId,Long clientId);
+    AppointmentDTO addAppointment(AppointmentCreateDTO appointment);
 
     AppointmentDTO updateAppointment(AppointmentCreateDTO appointment, Long id);
 

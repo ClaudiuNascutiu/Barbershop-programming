@@ -20,12 +20,9 @@ public class AppointmentController {
     private AppointmentService service;
 
 
-    @PostMapping("/{hairdresserId}/{clientId}")
-    public ResponseEntity<AppointmentDTO> addAppointment(@RequestBody AppointmentCreateDTO appointment,
-                                                         @PathVariable Long hairdresserId,
-                                                         @PathVariable Long clientId) {
-
-        return ResponseEntity.ok(service.addAppointment(appointment, hairdresserId, clientId));
+    @PostMapping
+    public ResponseEntity<AppointmentDTO> addAppointment(@RequestBody AppointmentCreateDTO appointment) {
+        return ResponseEntity.ok(service.addAppointment(appointment));
     }
 
     @PutMapping("/{id}")

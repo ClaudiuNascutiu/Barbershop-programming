@@ -3,23 +3,22 @@ package com.example.barbershopprogramming.service.mapper;
 import com.example.barbershopprogramming.dto.AppointmentCreateDTO;
 import com.example.barbershopprogramming.dto.AppointmentDTO;
 import com.example.barbershopprogramming.entity.Appointment;
-import com.example.barbershopprogramming.repository.ClientRepository;
-import com.example.barbershopprogramming.repository.HairdresserRepository;
+import com.example.barbershopprogramming.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@AllArgsConstructor
 public class AppointmentMapper {
-
-    HairdresserRepository hairdresserRepository;
-    ClientRepository clientRepository;
+    UserRepository userRepository;
 
     public Appointment toEntity(AppointmentCreateDTO createDTO) {
         return Appointment.builder()
                 .id(createDTO.getId())
                 .day(createDTO.getDay())
                 .startTime(createDTO.getStartTime())
-                .hairdresser(hairdresserRepository.getReferenceById(createDTO.getHairdresserId()))
-                .client(clientRepository.getReferenceById(createDTO.getClientId()))
+                .hairdresser(userRepository.getById(createDTO.getHairdresserId()))
+                .client(userRepository.getById(createDTO.getClientId()))
                 .build();
     }
 

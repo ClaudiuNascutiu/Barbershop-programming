@@ -1,5 +1,7 @@
 package com.example.barbershopprogramming.dto;
 
+import com.example.barbershopprogramming.entity.Role;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -16,9 +18,8 @@ public class AppointmentCreateDTO {
 
     private LocalDate day;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
     private LocalTime startTime;
-
-//    private LocalTime endTime;
 
     private Long hairdresserId;
 
