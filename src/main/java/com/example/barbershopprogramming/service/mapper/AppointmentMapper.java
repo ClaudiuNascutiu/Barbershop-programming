@@ -24,8 +24,25 @@ public class AppointmentMapper {
 
     public AppointmentDTO toDTO(Appointment appointment) {
         return AppointmentDTO.builder()
+                .id(appointment.getId())
                 .day(appointment.getDay())
                 .startTime(appointment.getStartTime())
+                .hairdresserName(appointment.getHairdresser().getFirstname())
+                .hairdresserLastName(appointment.getHairdresser().getLastname())
+                .hairdresserPhone(appointment.getHairdresser().getPhoneNumber())
+                .hairdresserEmail(appointment.getHairdresser().getEmail())
+                .build();
+    }
+
+    public AppointmentDTO toDTOForHairdresser(Appointment appointment) {
+        return AppointmentDTO.builder()
+                .id(appointment.getId())
+                .day(appointment.getDay())
+                .startTime(appointment.getStartTime())
+                .clientName(appointment.getClient().getFirstname())
+                .clientLastName(appointment.getClient().getLastname())
+                .clientPhone(appointment.getClient().getPhoneNumber())
+                .clientEmail(appointment.getClient().getEmail())
                 .build();
     }
 }

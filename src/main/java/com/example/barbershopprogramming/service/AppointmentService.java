@@ -17,4 +17,9 @@ public interface AppointmentService {
 
     List<LocalTime> findEmptySlotsByHairdresserId(Long id, LocalDate day);
 
+    List<AppointmentDTO> getAllAppointmentByClientId(Long id);
+
+    List<AppointmentDTO> getAllAppointmentByHairdresserId(Long id);
+
+    void deleteAllAppointmentByClientId(Long clientId);
 }

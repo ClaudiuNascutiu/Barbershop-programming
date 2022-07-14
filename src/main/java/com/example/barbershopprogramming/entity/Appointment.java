@@ -2,6 +2,8 @@ package com.example.barbershopprogramming.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -19,8 +21,11 @@ public class Appointment {
     private Long id;
 
     @Column(name = "day")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-mm-yyyy")
     private LocalDate day;
 
+
+    @DateTimeFormat(style = "HH:mm")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
     @Column(name = "start_time")
     private LocalTime startTime;

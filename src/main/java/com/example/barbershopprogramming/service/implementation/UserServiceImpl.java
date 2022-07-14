@@ -10,6 +10,7 @@ import com.example.barbershopprogramming.service.mapper.UserMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -49,6 +50,7 @@ public class UserServiceImpl implements UserService {
     public List<User> getAllUsers(Role role) {
         return repository.findByRole(role);
     }
+
 
     @Override
     public void deleteUser(Long id) {

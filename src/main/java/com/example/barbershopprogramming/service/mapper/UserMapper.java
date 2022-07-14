@@ -41,8 +41,10 @@ public class UserMapper {
                 .id(userDTO.getId())
                 .firstname(userDTO.getFirstname())
                 .lastname(userDTO.getLastname())
+                .phoneNumber(userDTO.getPhoneNumber())
                 .email(userDTO.getEmail())
                 .password(userRepository.findById(userDTO.getId()).get().getPassword())
+                .role(userDTO.getRole())
                 .build();
     }
 }

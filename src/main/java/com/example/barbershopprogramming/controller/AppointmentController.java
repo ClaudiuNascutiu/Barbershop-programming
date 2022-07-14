@@ -32,15 +32,31 @@ public class AppointmentController {
         return ResponseEntity.ok(service.updateAppointment(appointment, id));
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteAppointment(@PathVariable Long id) {
+    @DeleteMapping()
+    public void deleteAppointment(@RequestParam Long id) {
         service.deleteAppointment(id);
     }
 
-    @GetMapping("/{id}/{day}")
-    public ResponseEntity<List<LocalTime>> getAvailableSlots(@PathVariable Long id,
-                                                             @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate day){
-       return ResponseEntity.ok(service.findEmptySlotsByHairdresserId(id, day));
+    @DeleteMapping("/deleteAll")
+    public void deleteAllAppointmentsByClientId(@RequestParam Long id) {
+        service.deleteAllAppointmentByClientId(id);
     }
 
+    @GetMapping("/available-slots")
+    public ResponseEntity<List<LocalTime>> getAvailableSlots(@RequestParam Long id,
+                                                             @RequestParam
+                                                             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE,
+                                                                     fallbackPatterns = "dd-mm-yyyy") LocalDate day) {
+        return ResponseEntity.ok(service.findEmptySlotsByHairdresserId(id, day));
+    }
+
+    @GetMapping("/client")
+    public ResponseEntity<List<AppointmentDTO>> getAllAppointmentByClientId(@RequestParam Long id) {
+        return ResponseEntity.ok(service.getAllAppointmentByClientId(id));
+    }
+
+    @GetMapping("/hairdresser")
+    public ResponseEntity<List<AppointmentDTO>> getAllAppointmentByHairdresserId(@RequestParam Long id) {
+        return ResponseEntity.ok(service.getAllAppointmentByHairdresserId(id));
+    }
 }

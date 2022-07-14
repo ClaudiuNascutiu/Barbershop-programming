@@ -3,8 +3,6 @@ package com.example.barbershopprogramming.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -15,10 +13,27 @@ import java.time.LocalTime;
 @Builder
 public class AppointmentDTO {
 
+    private Long id;
+
     private LocalDate day;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
     private LocalTime startTime;
 
-//    private LocalTime endTime;
+    private String hairdresserName;
+
+    private String hairdresserLastName;
+
+    private String hairdresserPhone;
+
+    private String hairdresserEmail;
+
+    private String clientName;
+
+    private String clientLastName;
+
+    private String clientPhone;
+
+    private String clientEmail;
+
 }

@@ -10,11 +10,13 @@ import com.example.barbershopprogramming.service.AppointmentService;
 import com.example.barbershopprogramming.service.mapper.AppointmentMapper;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -62,10 +64,10 @@ public class AppointmentServiceImpl implements AppointmentService {
     public List<LocalTime> findEmptySlotsByHairdresserId(Long id, LocalDate day) {
         List<Appointment> appointments = appointmentRepository.findAllByHairdresserIdAndDay(id, day);
         List<LocalTime> availableSlots = new ArrayList<>();
-        LocalTime timeToCheck = LocalTime.parse("09:00:00");
+        LocalTime timeToCheck = LocalTime.parse("09:20:00");
 
-        for (int i = 0; i < 7; i++) {
-            timeToCheck = timeToCheck.plusHours(1);
+        for (int i = 0; i < 10; i++) {
+            timeToCheck = timeToCheck.plusMinutes(40);
             LocalTime finalTimeToCheck = timeToCheck;
             if (appointments.stream().noneMatch(appointment -> appointment.getStartTime().equals(finalTimeToCheck))) {
                 availableSlots.add(LocalTime.parse(timeToCheck.toString()));
@@ -74,5 +76,28 @@ public class AppointmentServiceImpl implements AppointmentService {
         return availableSlots;
     }
 
+    @Override
+    public List<AppointmentDTO> getAllAppointmentByClientId(Long id) {
+        List<Appointment> appointments = appointmentRepository.findAllByClientId(id);
+
+        return appointments.stream()
+                .map(mapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AppointmentDTO> getAllAppointmentByHairdresserId(Long id) {
+        List<Appointment> appointments = appointmentRepository.findAllByHairdresserId(id);
+
+        return appointments.stream()
+                .map(mapper::toDTOForHairdresser)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    @Override
+    public void deleteAllAppointmentByClientId(Long clientId) {
+        appointmentRepository.deleteAllByClientId(clientId);
+    }
 
 }

@@ -41,13 +41,13 @@ public class UserController {
     }
 
 
-    @PutMapping("/{id}")
-    public  ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO, @PathVariable Long id){
-        return ResponseEntity.ok(service.updateUser(userDTO));      // TODO: 18.06.2022 verificare id trimis = cu id DTO
+    @PutMapping
+    public  ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO){
+        return ResponseEntity.ok(service.updateUser(userDTO));
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Long id){
+    @DeleteMapping
+    public void deleteUser(@RequestParam Long id){
         service.deleteUser(id);
     }
 }
