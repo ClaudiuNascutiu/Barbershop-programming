@@ -19,5 +19,5 @@ public interface UserService {
 
     UserDTO getByEmail(String email);
 
-
+    UserDTO getUserById(Long id);
 }

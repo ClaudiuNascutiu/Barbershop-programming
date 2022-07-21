@@ -1,6 +1,5 @@
 package com.example.barbershopprogramming.repository;
 
-import com.example.barbershopprogramming.dto.UserDTO;
 import com.example.barbershopprogramming.entity.Role;
 import com.example.barbershopprogramming.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;

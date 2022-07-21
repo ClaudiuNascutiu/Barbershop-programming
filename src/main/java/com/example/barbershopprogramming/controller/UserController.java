@@ -40,6 +40,11 @@ public class UserController {
         return ResponseEntity.ok(service.getAllUsers(role));
     }
 
+    @GetMapping("/userid")
+    public ResponseEntity<UserDTO> getUserById(@RequestParam Long id){
+        return ResponseEntity.ok(service.getUserById(id));
+    }
+
 
     @PutMapping
     public  ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO){

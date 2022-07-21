@@ -63,5 +63,10 @@ public class UserServiceImpl implements UserService {
         return mapper.toDTO(repository.findByEmail(email));
     }
 
+    @Override
+    public UserDTO getUserById(Long id) {
+        return mapper.toDTO(repository.getById(id));
+    }
+
 
 }

@@ -3,7 +3,6 @@ package com.example.barbershopprogramming.service.implementation;
 import com.example.barbershopprogramming.dto.AppointmentCreateDTO;
 import com.example.barbershopprogramming.dto.AppointmentDTO;
 import com.example.barbershopprogramming.entity.Appointment;
-import com.example.barbershopprogramming.entity.User;
 import com.example.barbershopprogramming.repository.AppointmentRepository;
 import com.example.barbershopprogramming.repository.UserRepository;
 import com.example.barbershopprogramming.service.AppointmentService;
@@ -25,8 +24,6 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final AppointmentRepository appointmentRepository;
 
     private final UserRepository userRepository;
-
-    private User user;
 
     private final AppointmentMapper mapper;
 
