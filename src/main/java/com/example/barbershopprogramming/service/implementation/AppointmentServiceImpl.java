@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -62,16 +63,32 @@ public class AppointmentServiceImpl implements AppointmentService {
         List<Appointment> appointments = appointmentRepository.findAllByHairdresserIdAndDay(id, day);
         List<LocalTime> availableSlots = new ArrayList<>();
         LocalTime timeToCheck = LocalTime.parse("09:20:00");
-
         for (int i = 0; i < 10; i++) {
             timeToCheck = timeToCheck.plusMinutes(40);
             LocalTime finalTimeToCheck = timeToCheck;
             if (appointments.stream().noneMatch(appointment -> appointment.getStartTime().equals(finalTimeToCheck))) {
                 availableSlots.add(LocalTime.parse(timeToCheck.toString()));
             }
+            checkHourForPause(availableSlots, finalTimeToCheck);
+            checkTime(day, availableSlots, timeToCheck);
         }
         return availableSlots;
     }
+
+    private void checkTime(LocalDate day, List<LocalTime> availableSlots, LocalTime timeToCheck) {
+        LocalTime checkTime = LocalTime.parse(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm")));
+        if (timeToCheck.equals(checkTime) || timeToCheck.isBefore(checkTime) && day.equals(LocalDate.now())) {
+            availableSlots.remove(LocalTime.parse(timeToCheck.toString()));
+        }
+    }
+
+    private void checkHourForPause(List<LocalTime> availableSlots, LocalTime finalTimeToCheck) {
+        LocalTime checkPause = LocalTime.parse("12:00:00");
+        if (finalTimeToCheck.equals(checkPause)) {
+            availableSlots.remove(LocalTime.parse(checkPause.toString()));
+        }
+    }
+
 
     @Override
     public List<AppointmentDTO> getAllAppointmentByClientId(Long id) {
