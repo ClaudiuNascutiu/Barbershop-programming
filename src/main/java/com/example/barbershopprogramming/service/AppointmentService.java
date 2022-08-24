@@ -21,5 +21,8 @@ public interface AppointmentService {
 
     List<AppointmentDTO> getAllAppointmentByHairdresserId(Long id);
 
+    List<AppointmentDTO> getAllAppointmentsBeforeTheCurrentDateByClientId(Long id);
+    List<AppointmentDTO> getAllAppointmentsAfterTheCurrentDateByClientId(Long id);
+
     void deleteAllAppointmentByClientId(Long clientId);
 }

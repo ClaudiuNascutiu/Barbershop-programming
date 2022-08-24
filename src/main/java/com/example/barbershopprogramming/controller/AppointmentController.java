@@ -2,7 +2,6 @@ package com.example.barbershopprogramming.controller;
 
 import com.example.barbershopprogramming.dto.AppointmentCreateDTO;
 import com.example.barbershopprogramming.dto.AppointmentDTO;
-import com.example.barbershopprogramming.dto.UserDTO;
 import com.example.barbershopprogramming.service.AppointmentService;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -59,6 +58,15 @@ public class AppointmentController {
     @GetMapping("/hairdresser")
     public ResponseEntity<List<AppointmentDTO>> getAllAppointmentByHairdresserId(@RequestParam Long id) {
         return ResponseEntity.ok(service.getAllAppointmentByHairdresserId(id));
+    }
+    @GetMapping("/before")
+    public ResponseEntity<List<AppointmentDTO>> getAllAppointmentBeforeTheCurrentDateByClientId(@RequestParam Long id){
+        return ResponseEntity.ok(service.getAllAppointmentsBeforeTheCurrentDateByClientId(id));
+    }
+
+    @GetMapping("/after")
+    public ResponseEntity<List<AppointmentDTO>> getAllAppointmentAfterTheCurrentDateByClientId(@RequestParam Long id){
+        return ResponseEntity.ok(service.getAllAppointmentsAfterTheCurrentDateByClientId(id));
     }
 
 

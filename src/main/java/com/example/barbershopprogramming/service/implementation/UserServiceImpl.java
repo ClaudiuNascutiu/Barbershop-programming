@@ -26,8 +26,6 @@ public class UserServiceImpl implements UserService {
         this.mapper = mapper;
         this.encoder = encoder;
     }
-
-
     @Override
     public UserDTO addUser(UserCreateDTO createDTO) {
         User toBeSaved = mapper.toEntity(createDTO);
@@ -36,7 +34,6 @@ public class UserServiceImpl implements UserService {
 
         return mapper.toDTO(saved);
     }
-
     @Override
     public UserDTO updateUser(UserDTO userDTO) {
         repository.findById(userDTO.getId()).orElseThrow(() -> new NoSuchElementException("No client was found"));

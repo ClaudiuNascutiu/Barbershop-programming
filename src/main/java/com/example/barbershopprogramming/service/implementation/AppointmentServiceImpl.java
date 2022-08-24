@@ -4,16 +4,17 @@ import com.example.barbershopprogramming.dto.AppointmentCreateDTO;
 import com.example.barbershopprogramming.dto.AppointmentDTO;
 import com.example.barbershopprogramming.entity.Appointment;
 import com.example.barbershopprogramming.repository.AppointmentRepository;
-import com.example.barbershopprogramming.repository.UserRepository;
 import com.example.barbershopprogramming.service.AppointmentService;
 import com.example.barbershopprogramming.service.mapper.AppointmentMapper;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -21,28 +22,20 @@ import java.util.stream.Collectors;
 
 @Service
 public class AppointmentServiceImpl implements AppointmentService {
-
     private final AppointmentRepository appointmentRepository;
-
-    private final UserRepository userRepository;
-
     private final AppointmentMapper mapper;
 
-
     public AppointmentServiceImpl(AppointmentRepository appointmentRepository,
-                                  UserRepository userRepository, AppointmentMapper mapper) {
+                                  AppointmentMapper mapper) {
         this.appointmentRepository = appointmentRepository;
-        this.userRepository = userRepository;
         this.mapper = mapper;
     }
-
     @Override
     public AppointmentDTO addAppointment(AppointmentCreateDTO appointment) {
         Appointment toBeSaved = mapper.toEntity(appointment);
         Appointment saved = appointmentRepository.save(toBeSaved);
         return mapper.toDTO(saved);
     }
-
     @Override
     public AppointmentDTO updateAppointment(AppointmentCreateDTO appointment, Long id) {
         appointmentRepository.findById(id).orElseThrow(NoSuchElementException::new);
@@ -51,7 +44,6 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         return mapper.toDTO(saved);
     }
-
     @Override
     public void deleteAppointment(Long id) {
         appointmentRepository.findById(id).orElseThrow(NoSuchElementException::new);
@@ -72,7 +64,12 @@ public class AppointmentServiceImpl implements AppointmentService {
             checkHourForPause(availableSlots, finalTimeToCheck);
             checkTime(day, availableSlots, timeToCheck);
         }
-        return availableSlots;
+        if(day.getDayOfWeek().equals(DayOfWeek.SUNDAY)){
+            LocalTime sunday = LocalTime.parse("00:00:00");
+            return Collections.singletonList(sunday);
+        }else{
+            return availableSlots;
+        }
     }
 
     private void checkTime(LocalDate day, List<LocalTime> availableSlots, LocalTime timeToCheck) {
@@ -90,6 +87,8 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
 
+
+
     @Override
     public List<AppointmentDTO> getAllAppointmentByClientId(Long id) {
         List<Appointment> appointments = appointmentRepository.findAllByClientId(id);
@@ -105,6 +104,36 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         return appointments.stream()
                 .map(mapper::toDTOForHairdresser)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AppointmentDTO> getAllAppointmentsBeforeTheCurrentDateByClientId(Long id) {
+        List<Appointment> appointments = appointmentRepository.findAllByClientId(id);
+        List<Appointment> appointmentsBeforeTheCurrentDay = new ArrayList<>();
+
+        for (Appointment appointment : appointments) {
+            if (appointment.getDay().isBefore(LocalDate.now())){
+                appointmentsBeforeTheCurrentDay.add(appointment);
+            }
+        }
+        return appointmentsBeforeTheCurrentDay.stream()
+                .map(mapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AppointmentDTO> getAllAppointmentsAfterTheCurrentDateByClientId(Long id) {
+        List<Appointment> appointments = appointmentRepository.findAllByClientId(id);
+        List<Appointment> appointmentsAfterTheCurrentDay = new ArrayList<>();
+
+        for (Appointment appointment : appointments) {
+            if (appointment.getDay().isAfter(LocalDate.now())){
+                appointmentsAfterTheCurrentDay.add(appointment);
+            }
+        }
+        return appointmentsAfterTheCurrentDay.stream()
+                .map(mapper::toDTO)
                 .collect(Collectors.toList());
     }
 
