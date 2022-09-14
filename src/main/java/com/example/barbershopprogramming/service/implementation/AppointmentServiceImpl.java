@@ -30,12 +30,14 @@ public class AppointmentServiceImpl implements AppointmentService {
         this.appointmentRepository = appointmentRepository;
         this.mapper = mapper;
     }
+
     @Override
     public AppointmentDTO addAppointment(AppointmentCreateDTO appointment) {
         Appointment toBeSaved = mapper.toEntity(appointment);
         Appointment saved = appointmentRepository.save(toBeSaved);
         return mapper.toDTO(saved);
     }
+
     @Override
     public AppointmentDTO updateAppointment(AppointmentCreateDTO appointment, Long id) {
         appointmentRepository.findById(id).orElseThrow(NoSuchElementException::new);
@@ -44,6 +46,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         return mapper.toDTO(saved);
     }
+
     @Override
     public void deleteAppointment(Long id) {
         appointmentRepository.findById(id).orElseThrow(NoSuchElementException::new);
@@ -64,10 +67,10 @@ public class AppointmentServiceImpl implements AppointmentService {
             checkHourForPause(availableSlots, finalTimeToCheck);
             checkTime(day, availableSlots, timeToCheck);
         }
-        if(day.getDayOfWeek().equals(DayOfWeek.SUNDAY)){
+        if (day.getDayOfWeek().equals(DayOfWeek.SUNDAY)) {
             LocalTime sunday = LocalTime.parse("00:00:00");
             return Collections.singletonList(sunday);
-        }else{
+        } else {
             return availableSlots;
         }
     }
@@ -87,8 +90,6 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
 
-
-
     @Override
     public List<AppointmentDTO> getAllAppointmentByClientId(Long id) {
         List<Appointment> appointments = appointmentRepository.findAllByClientId(id);
@@ -99,10 +100,20 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public List<AppointmentDTO> getAllAppointmentByHairdresserId(Long id) {
+    public List<AppointmentDTO> getAllAppointmentsAfterByHairdresserId(Long id) {
         List<Appointment> appointments = appointmentRepository.findAllByHairdresserId(id);
+        List<Appointment> appointmentsAfterTheCurrentDay = new ArrayList<>();
 
-        return appointments.stream()
+
+        for (Appointment appointment : appointments) {
+            if (appointment.getDay().isAfter(LocalDate.now())
+                    || appointment.getDay().isEqual(LocalDate.now())
+                    && appointment.getStartTime().isAfter(LocalTime.now())) {
+                appointmentsAfterTheCurrentDay.add(appointment);
+            }
+        }
+
+        return appointmentsAfterTheCurrentDay.stream()
                 .map(mapper::toDTOForHairdresser)
                 .collect(Collectors.toList());
     }
@@ -113,7 +124,9 @@ public class AppointmentServiceImpl implements AppointmentService {
         List<Appointment> appointmentsBeforeTheCurrentDay = new ArrayList<>();
 
         for (Appointment appointment : appointments) {
-            if (appointment.getDay().isBefore(LocalDate.now())){
+            if (appointment.getDay().isBefore(LocalDate.now())
+                    || appointment.getDay().isEqual(LocalDate.now())
+                    && appointment.getStartTime().isBefore(LocalTime.now())) {
                 appointmentsBeforeTheCurrentDay.add(appointment);
             }
         }
@@ -127,8 +140,11 @@ public class AppointmentServiceImpl implements AppointmentService {
         List<Appointment> appointments = appointmentRepository.findAllByClientId(id);
         List<Appointment> appointmentsAfterTheCurrentDay = new ArrayList<>();
 
+
         for (Appointment appointment : appointments) {
-            if (appointment.getDay().isAfter(LocalDate.now())){
+            if (appointment.getDay().isAfter(LocalDate.now())
+                    || appointment.getDay().isEqual(LocalDate.now())
+                    && appointment.getStartTime().isAfter(LocalTime.now())) {
                 appointmentsAfterTheCurrentDay.add(appointment);
             }
         }

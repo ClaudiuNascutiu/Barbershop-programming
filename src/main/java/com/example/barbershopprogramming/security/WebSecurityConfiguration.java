@@ -39,11 +39,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         auth.authenticationProvider(clientAuthenticationProvider());
     }
 
-    public DaoAuthenticationProvider clientAuthenticationProvider(){
+    public DaoAuthenticationProvider clientAuthenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userDetailsService);
         provider.setPasswordEncoder(encoder);
-        return  provider;
+        return provider;
     }
 
 }

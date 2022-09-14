@@ -57,15 +57,16 @@ public class AppointmentController {
 
     @GetMapping("/hairdresser")
     public ResponseEntity<List<AppointmentDTO>> getAllAppointmentByHairdresserId(@RequestParam Long id) {
-        return ResponseEntity.ok(service.getAllAppointmentByHairdresserId(id));
+        return ResponseEntity.ok(service.getAllAppointmentsAfterByHairdresserId(id));
     }
+
     @GetMapping("/before")
-    public ResponseEntity<List<AppointmentDTO>> getAllAppointmentBeforeTheCurrentDateByClientId(@RequestParam Long id){
+    public ResponseEntity<List<AppointmentDTO>> getAllAppointmentBeforeTheCurrentDateByClientId(@RequestParam Long id) {
         return ResponseEntity.ok(service.getAllAppointmentsBeforeTheCurrentDateByClientId(id));
     }
 
     @GetMapping("/after")
-    public ResponseEntity<List<AppointmentDTO>> getAllAppointmentAfterTheCurrentDateByClientId(@RequestParam Long id){
+    public ResponseEntity<List<AppointmentDTO>> getAllAppointmentAfterTheCurrentDateByClientId(@RequestParam Long id) {
         return ResponseEntity.ok(service.getAllAppointmentsAfterTheCurrentDateByClientId(id));
     }
 

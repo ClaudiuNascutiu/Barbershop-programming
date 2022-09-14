@@ -1,16 +1,14 @@
 package com.example.barbershopprogramming.entity;
 
+import com.sun.istack.NotNull;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@SuperBuilder
+@Builder
 @Getter
 @Setter
 @Entity
@@ -30,6 +28,10 @@ public class User {
     private String email;
 
     private String password;
+
+//    @Lob
+//    @NotNull
+//    private byte[] profileImage;
 
     @Enumerated(value = EnumType.STRING)
     @Column(name = "role")

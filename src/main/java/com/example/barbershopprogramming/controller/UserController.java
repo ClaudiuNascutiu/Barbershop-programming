@@ -19,40 +19,41 @@ public class UserController {
     private final UserService service;
 
     @PostMapping("/client/signup")
-    public ResponseEntity<UserDTO> addClient(@RequestBody UserCreateDTO createDTO){
+    public ResponseEntity<UserDTO> addClient(@RequestBody UserCreateDTO createDTO) {
         createDTO.setRole(Role.CLIENT);
         return ResponseEntity.ok(service.addUser(createDTO));
     }
 
     @PostMapping("/hairdresser/signup")
-    public ResponseEntity<UserDTO> addHairdresser(@RequestBody UserCreateDTO createDTO){
+    public ResponseEntity<UserDTO> addHairdresser(@RequestBody UserCreateDTO createDTO) {
         createDTO.setRole(Role.HAIRDRESSER);
         return ResponseEntity.ok(service.addUser(createDTO));
     }
+
     @PostMapping("/login")
-    public ResponseEntity<UserDTO> login(@RequestBody UserCreateDTO createDTO){
+    public ResponseEntity<UserDTO> login(@RequestBody UserCreateDTO createDTO) {
         return ResponseEntity.ok(service.getByEmail(createDTO.getEmail()));
     }
 
 
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers(@RequestParam Role role){
+    public ResponseEntity<List<User>> getAllUsers(@RequestParam Role role) {
         return ResponseEntity.ok(service.getAllUsers(role));
     }
 
     @GetMapping("/userid")
-    public ResponseEntity<UserDTO> getUserById(@RequestParam Long id){
+    public ResponseEntity<UserDTO> getUserById(@RequestParam Long id) {
         return ResponseEntity.ok(service.getUserById(id));
     }
 
 
     @PutMapping
-    public  ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO){
+    public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO) {
         return ResponseEntity.ok(service.updateUser(userDTO));
     }
 
     @DeleteMapping
-    public void deleteUser(@RequestParam Long id){
+    public void deleteUser(@RequestParam Long id) {
         service.deleteUser(id);
     }
 }

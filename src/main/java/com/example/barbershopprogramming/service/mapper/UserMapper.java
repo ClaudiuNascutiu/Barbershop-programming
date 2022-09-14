@@ -21,6 +21,7 @@ public class UserMapper {
                 .phoneNumber(createDTO.getPhoneNumber())
                 .email(createDTO.getEmail())
                 .password(createDTO.getPassword())
+//                .profileImage(createDTO.getProfileImage())
                 .role(Role.valueOf(createDTO.getRole().name()))
                 .build();
     }
@@ -32,6 +33,7 @@ public class UserMapper {
                 .lastname(user.getLastname())
                 .phoneNumber(user.getPhoneNumber())
                 .email(user.getEmail())
+//                .profileImage(user.getProfileImage())
                 .role(user.getRole())
                 .build();
     }
@@ -43,6 +45,7 @@ public class UserMapper {
                 .lastname(userDTO.getLastname())
                 .phoneNumber(userDTO.getPhoneNumber())
                 .email(userDTO.getEmail())
+//                .profileImage(userDTO.getProfileImage())
                 .password(userRepository.findById(userDTO.getId()).get().getPassword())
                 .role(userDTO.getRole())
                 .build();

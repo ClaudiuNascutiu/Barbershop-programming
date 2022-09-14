@@ -23,6 +23,8 @@ public class UserCreateDTO {
 
     private String password;
 
+//    private byte[] profileImage;
+
     @Enumerated(value = EnumType.STRING)
     private Role role;
 }
