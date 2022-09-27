@@ -30,7 +30,6 @@ public class User {
     private String password;
 
 //    @Lob
-//    @NotNull
 //    private byte[] profileImage;
 
     @Enumerated(value = EnumType.STRING)

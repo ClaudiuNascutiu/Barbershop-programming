@@ -6,6 +6,7 @@ import com.example.barbershopprogramming.entity.Appointment;
 import com.example.barbershopprogramming.repository.AppointmentRepository;
 import com.example.barbershopprogramming.service.AppointmentService;
 import com.example.barbershopprogramming.service.mapper.AppointmentMapper;
+import com.example.barbershopprogramming.sms.sms_sender.TwilioSmsSender;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -25,16 +26,24 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final AppointmentRepository appointmentRepository;
     private final AppointmentMapper mapper;
 
+    private final TwilioSmsSender twilioSmsSender;
+
     public AppointmentServiceImpl(AppointmentRepository appointmentRepository,
-                                  AppointmentMapper mapper) {
+                                  AppointmentMapper mapper, TwilioSmsSender twilioSmsSender) {
         this.appointmentRepository = appointmentRepository;
         this.mapper = mapper;
+        this.twilioSmsSender = twilioSmsSender;
     }
 
     @Override
-    public AppointmentDTO addAppointment(AppointmentCreateDTO appointment) {
+    public AppointmentDTO addAppointment(AppointmentCreateDTO appointment, String phoneNumber) {
         Appointment toBeSaved = mapper.toEntity(appointment);
         Appointment saved = appointmentRepository.save(toBeSaved);
+        twilioSmsSender.sendSms(phoneNumber, "Te-ai programat in data de "
+                + appointment.getDay().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
+                + " la ora "
+                + appointment.getStartTime()
+                + " 😀");
         return mapper.toDTO(saved);
     }
 
@@ -89,7 +98,6 @@ public class AppointmentServiceImpl implements AppointmentService {
         }
     }
 
-
     @Override
     public List<AppointmentDTO> getAllAppointmentByClientId(Long id) {
         List<Appointment> appointments = appointmentRepository.findAllByClientId(id);
@@ -104,18 +112,26 @@ public class AppointmentServiceImpl implements AppointmentService {
         List<Appointment> appointments = appointmentRepository.findAllByHairdresserId(id);
         List<Appointment> appointmentsAfterTheCurrentDay = new ArrayList<>();
 
-
         for (Appointment appointment : appointments) {
-            if (appointment.getDay().isAfter(LocalDate.now())
-                    || appointment.getDay().isEqual(LocalDate.now())
-                    && appointment.getStartTime().isAfter(LocalTime.now())) {
+            if (dayAfter(appointment) || isEqual(appointment) && startTimeIsAfter(appointment)) {
                 appointmentsAfterTheCurrentDay.add(appointment);
             }
         }
-
         return appointmentsAfterTheCurrentDay.stream()
                 .map(mapper::toDTOForHairdresser)
                 .collect(Collectors.toList());
+    }
+
+    private boolean startTimeIsAfter(Appointment appointment) {
+        return appointment.getStartTime().isAfter(LocalTime.now());
+    }
+
+    private boolean isEqual(Appointment appointment) {
+        return appointment.getDay().isEqual(LocalDate.now());
+    }
+
+    private boolean dayAfter(Appointment appointment) {
+        return appointment.getDay().isAfter(LocalDate.now());
     }
 
     @Override
@@ -124,15 +140,21 @@ public class AppointmentServiceImpl implements AppointmentService {
         List<Appointment> appointmentsBeforeTheCurrentDay = new ArrayList<>();
 
         for (Appointment appointment : appointments) {
-            if (appointment.getDay().isBefore(LocalDate.now())
-                    || appointment.getDay().isEqual(LocalDate.now())
-                    && appointment.getStartTime().isBefore(LocalTime.now())) {
+            if (isDayBefore(appointment) || isEqual(appointment) && isTimeBefore(appointment)) {
                 appointmentsBeforeTheCurrentDay.add(appointment);
             }
         }
         return appointmentsBeforeTheCurrentDay.stream()
                 .map(mapper::toDTO)
                 .collect(Collectors.toList());
+    }
+
+    private boolean isTimeBefore(Appointment appointment) {
+        return appointment.getStartTime().isBefore(LocalTime.now());
+    }
+
+    private boolean isDayBefore(Appointment appointment) {
+        return appointment.getDay().isBefore(LocalDate.now());
     }
 
     @Override
@@ -142,15 +164,19 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 
         for (Appointment appointment : appointments) {
-            if (appointment.getDay().isAfter(LocalDate.now())
-                    || appointment.getDay().isEqual(LocalDate.now())
-                    && appointment.getStartTime().isAfter(LocalTime.now())) {
+            if (isAfter(appointment)
+                    || isEqual(appointment)
+                    && startTimeIsAfter(appointment)) {
                 appointmentsAfterTheCurrentDay.add(appointment);
             }
         }
         return appointmentsAfterTheCurrentDay.stream()
                 .map(mapper::toDTO)
                 .collect(Collectors.toList());
+    }
+
+    private boolean isAfter(Appointment appointment) {
+        return dayAfter(appointment);
     }
 
     @Transactional

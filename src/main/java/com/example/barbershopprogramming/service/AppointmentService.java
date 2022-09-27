@@ -2,6 +2,7 @@ package com.example.barbershopprogramming.service;
 
 import com.example.barbershopprogramming.dto.AppointmentCreateDTO;
 import com.example.barbershopprogramming.dto.AppointmentDTO;
+import com.example.barbershopprogramming.entity.User;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -9,7 +10,7 @@ import java.util.List;
 
 public interface AppointmentService {
 
-    AppointmentDTO addAppointment(AppointmentCreateDTO appointment);
+    AppointmentDTO addAppointment(AppointmentCreateDTO appointment, String phoneNumber);
 
     AppointmentDTO updateAppointment(AppointmentCreateDTO appointment, Long id);
 

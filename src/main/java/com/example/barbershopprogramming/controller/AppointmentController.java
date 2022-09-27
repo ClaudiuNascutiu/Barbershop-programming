@@ -21,8 +21,10 @@ public class AppointmentController {
 
 
     @PostMapping
-    public ResponseEntity<AppointmentDTO> addAppointment(@RequestBody AppointmentCreateDTO appointment) {
-        return ResponseEntity.ok(service.addAppointment(appointment));
+    public ResponseEntity<AppointmentDTO> addAppointment(@RequestBody AppointmentCreateDTO appointment,
+                                                         @RequestParam String phoneNumber) {
+
+        return ResponseEntity.ok(service.addAppointment(appointment, phoneNumber));
     }
 
     @PutMapping("/{id}")
@@ -46,7 +48,7 @@ public class AppointmentController {
     public ResponseEntity<List<LocalTime>> getAvailableSlots(@RequestParam Long id,
                                                              @RequestParam
                                                              @DateTimeFormat(iso = DateTimeFormat.ISO.DATE,
-                                                                     fallbackPatterns = "dd-mm-yyyy") LocalDate day) {
+                                                                     fallbackPatterns = "dd-MM-yyyy") LocalDate day) {
         return ResponseEntity.ok(service.findEmptySlotsByHairdresserId(id, day));
     }
 
@@ -69,6 +71,5 @@ public class AppointmentController {
     public ResponseEntity<List<AppointmentDTO>> getAllAppointmentAfterTheCurrentDateByClientId(@RequestParam Long id) {
         return ResponseEntity.ok(service.getAllAppointmentsAfterTheCurrentDateByClientId(id));
     }
-
 
 }
