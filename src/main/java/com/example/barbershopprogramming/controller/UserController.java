@@ -7,8 +7,10 @@ import com.example.barbershopprogramming.entity.User;
 import com.example.barbershopprogramming.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @AllArgsConstructor
@@ -19,13 +21,13 @@ public class UserController {
     private final UserService service;
 
     @PostMapping("/client/signup")
-    public ResponseEntity<UserDTO> addClient(@RequestBody UserCreateDTO createDTO) {
+    public ResponseEntity<UserDTO> addClient(@RequestBody @Valid UserCreateDTO createDTO) {
         createDTO.setRole(Role.CLIENT);
         return ResponseEntity.ok(service.addUser(createDTO));
     }
 
     @PostMapping("/hairdresser/signup")
-    public ResponseEntity<UserDTO> addHairdresser(@RequestBody UserCreateDTO createDTO) {
+    public ResponseEntity<UserDTO> addHairdresser(@RequestBody @Valid UserCreateDTO createDTO) {
         createDTO.setRole(Role.HAIRDRESSER);
         return ResponseEntity.ok(service.addUser(createDTO));
     }

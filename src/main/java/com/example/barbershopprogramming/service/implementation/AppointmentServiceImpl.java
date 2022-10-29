@@ -39,11 +39,11 @@ public class AppointmentServiceImpl implements AppointmentService {
     public AppointmentDTO addAppointment(AppointmentCreateDTO appointment, String phoneNumber) {
         Appointment toBeSaved = mapper.toEntity(appointment);
         Appointment saved = appointmentRepository.save(toBeSaved);
-        twilioSmsSender.sendSms(phoneNumber, "Te-ai programat in data de "
-                + appointment.getDay().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
-                + " la ora "
-                + appointment.getStartTime()
-                + " 😀");
+//        twilioSmsSender.sendSms(phoneNumber, "Te-ai programat in data de "
+//                + appointment.getDay().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
+//                + " la ora "
+//                + appointment.getStartTime()
+//                + " 😀");
         return mapper.toDTO(saved);
     }
 

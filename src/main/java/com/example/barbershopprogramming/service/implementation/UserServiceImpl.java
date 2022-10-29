@@ -4,16 +4,19 @@ import com.example.barbershopprogramming.dto.UserCreateDTO;
 import com.example.barbershopprogramming.dto.UserDTO;
 import com.example.barbershopprogramming.entity.Role;
 import com.example.barbershopprogramming.entity.User;
+import com.example.barbershopprogramming.handler_exception.UserAlreadyExistsException;
 import com.example.barbershopprogramming.repository.UserRepository;
 import com.example.barbershopprogramming.service.UserService;
 import com.example.barbershopprogramming.service.mapper.UserMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
     private final UserRepository repository;
@@ -26,13 +29,22 @@ public class UserServiceImpl implements UserService {
         this.encoder = encoder;
     }
     @Override
-    public UserDTO addUser(UserCreateDTO createDTO) {
+    public UserDTO addUser(UserCreateDTO createDTO) throws UserAlreadyExistsException {
+        if(emailExists(createDTO.getEmail())){
+            throw new UserAlreadyExistsException("There is an account with that email address: " +
+                    createDTO.getEmail());
+        }
         User toBeSaved = mapper.toEntity(createDTO);
         toBeSaved.setPassword(encoder.encode(toBeSaved.getPassword()));
         User saved = repository.save(toBeSaved);
 
         return mapper.toDTO(saved);
     }
+
+    private boolean emailExists(String email) {
+        return repository.findByEmail(email) != null;
+    }
+
     @Override
     public UserDTO updateUser(UserDTO userDTO) {
         repository.findById(userDTO.getId()).orElseThrow(() -> new NoSuchElementException("No client was found"));
